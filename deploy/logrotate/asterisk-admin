@@ -1,0 +1,10 @@
+/var/www/asterisk-admin/backend/runtime/logs/*.log {
+    daily
+    rotate 30
+    missingok
+    notifempty
+    compress
+    delaycompress
+    copytruncate
+    dateext
+}

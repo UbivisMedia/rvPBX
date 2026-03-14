@@ -1,0 +1,2 @@
+# taegliches Backup um 02:15
+15 2 * * * cd /var/www/asterisk-admin/backend && /usr/bin/node ./scripts/backup-configs.mjs >> /var/log/asterisk-admin-backup.log 2>&1

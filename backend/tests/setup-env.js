@@ -1,0 +1,16 @@
+process.env.NODE_ENV = 'test';
+process.env.PORT = '3999';
+process.env.CORS_ORIGIN = 'http://localhost:5173';
+process.env.JWT_SECRET = 'test-test-test-test-test-test-test-test';
+process.env.JWT_REFRESH_SECRET = 'refresh-refresh-refresh-refresh-refresh';
+process.env.JWT_ACCESS_TTL = '15m';
+process.env.JWT_REFRESH_TTL_DAYS = '7';
+process.env.ADMIN_USERNAME = 'admin';
+process.env.ADMIN_PASSWORD = 'admin123';
+process.env.ASTERISK_ENABLED = 'false';
+process.env.DATA_DIR = './runtime/test-data';
+process.env.LOG_DIR = './runtime/test-logs';
+process.env.ASTERISK_CONFIG_PATH = './runtime/test-asterisk';
+process.env.ASTERISK_FULL_LOG_FILE = './runtime/test-logs/asterisk-full.log';
+process.env.BACKUP_PATH = './runtime/test-backups';
+process.env.PROVISIONING_BASE_URL = 'http://localhost:3001/provisioning';

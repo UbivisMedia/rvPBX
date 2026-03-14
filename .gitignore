@@ -1,0 +1,7 @@
+node_modules/
+**/node_modules/
+backend/runtime/
+backend/.env
+frontend/dist/
+backend/coverage/
+*.log
