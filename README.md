@@ -91,6 +91,46 @@ docker compose up --build
 - Cron Backup: `deploy/cron/asterisk-admin-backup`
 - Troubleshooting: `docs/troubleshooting.md`
 
+## Automatischer Full-Install auf Debian
+
+Es gibt ein Script fuer frische Debian-Server:
+
+- `scripts/full_install_debian.sh`
+
+Du brauchst nur dieses Script. Falls kein lokales Repo vorhanden ist, klont es automatisch:
+
+- `https://github.com/UbivisMedia/rvPBX.git`
+- Standard-Zielpfad: `/opt/rvPBX`
+
+Beispiele:
+
+```bash
+sudo ./scripts/full_install_debian.sh --domain pbx.example.com
+sudo ./scripts/full_install_debian.sh --install-asterisk apt --domain pbx.example.com
+sudo ./scripts/full_install_debian.sh --install-asterisk latest-source --domain pbx.example.com --enable-ssl --ssl-email admin@example.com
+```
+
+Wenn du das Script direkt auf einem frischen Server laden willst:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/UbivisMedia/rvPBX/main/scripts/full_install_debian.sh -o /tmp/full_install_debian.sh
+sudo bash /tmp/full_install_debian.sh --domain pbx.example.com
+```
+
+Das Script:
+
+- installiert Systemabhaengigkeiten, Node.js 22, PM2, Nginx
+- generiert sichere Secrets (`JWT_SECRET`, `JWT_REFRESH_SECRET`, AMI/ARI Passwoerter, Admin-Passwort)
+- schreibt `backend/.env` automatisch
+- baut Frontend und startet Backend per PM2
+- konfiguriert Nginx
+- installiert optional Asterisk (`apt` oder `latest-source`)
+- fragt interaktiv nach Asterisk-Installation, wenn `--install-asterisk` nicht gesetzt ist
+
+Wichtiger Output nach dem Lauf:
+
+- `backend/.install-secrets.txt` mit generierten Zugangsdaten
+
 ## Hinweis zur Asterisk-Abnahme
 
 Die Code-Funktionalitaet ist umgesetzt. Die finale fachliche Abnahme fuer AMI/ARI benoetigt ein reales Asterisk 20/22 Zielsystem mit produktiven Credentials.

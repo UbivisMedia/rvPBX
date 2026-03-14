@@ -1,5 +1,53 @@
 # Deployment Guide
 
+## Vollautomatisches Setup (Debian)
+
+Das Script kann alleine laufen und klont das Repo automatisch:
+
+- Repo URL: `https://github.com/UbivisMedia/rvPBX.git`
+- Zielpfad: `/opt/rvPBX` (Default)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/UbivisMedia/rvPBX/main/scripts/full_install_debian.sh -o /tmp/full_install_debian.sh
+sudo bash /tmp/full_install_debian.sh --domain pbx.example.com
+```
+
+Wenn `--install-asterisk` nicht angegeben ist, fragt das Script waehrend der Ausfuehrung interaktiv, ob Asterisk zusaetzlich installiert werden soll.
+
+Mit optionaler Asterisk-Installation:
+
+```bash
+# Asterisk aus Debian-Repo
+sudo ./scripts/full_install_debian.sh --domain pbx.example.com --install-asterisk apt
+
+# Aktuellste Asterisk-Source von downloads.asterisk.org
+sudo ./scripts/full_install_debian.sh --domain pbx.example.com --install-asterisk latest-source
+```
+
+Mit automatischem SSL:
+
+```bash
+sudo ./scripts/full_install_debian.sh \
+  --domain pbx.example.com \
+  --install-asterisk latest-source \
+  --enable-ssl \
+  --ssl-email admin@example.com
+```
+
+Optional kannst du Repo URL und Zielpfad anpassen:
+
+```bash
+sudo ./scripts/full_install_debian.sh \
+  --repo-url https://github.com/UbivisMedia/rvPBX.git \
+  --install-dir /opt/rvPBX \
+  --domain pbx.example.com
+```
+
+Das Script generiert sichere Secrets automatisch und schreibt sie in:
+
+- `backend/.env`
+- `backend/.install-secrets.txt`
+
 ## PM2 Startup
 
 ```bash
