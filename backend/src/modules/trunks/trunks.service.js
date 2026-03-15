@@ -4,6 +4,7 @@ import { reloadPjsip } from '../../services/reload.service.js';
 import { asteriskService } from '../../services/asterisk.service.js';
 import { telemetryService } from '../../services/telemetry.service.js';
 import { emitSocket } from '../../services/socket.service.js';
+import { logger } from '../../core/logger.js';
 
 function touchConfig(label, payload = null) {
   const configPath = writePjsipManagedConfig();
@@ -125,7 +126,12 @@ export async function testTrunk(id) {
       id
     );
     telemetryService.setTrunkStatus(trunk.name, 'registered', { reason: 'test-ok' });
-  } catch (_error) {
+  } catch (error) {
+    logger.warn('AMI trunk test failed, using simulated result', {
+      trunkId: id,
+      trunkName: trunk.name,
+      error: error.message
+    });
     result = {
       response: 'AMI unavailable, test simulated',
       endpoint: `trunk-${trunk.name}`
@@ -172,7 +178,8 @@ export async function trunkStatus(id) {
         id
       );
       telemetryService.setTrunkStatus(trunk.name, liveStatus, { source: 'ami' });
-    } catch (_error) {
+    } catch (error) {
+      logger.warn('AMI trunk status check failed', { id, error: error.message });
       liveStatus = trunk.status || 'unknown';
     }
   }

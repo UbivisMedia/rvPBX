@@ -2,6 +2,9 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { exec } from 'node:child_process';
+import { promisify } from 'node:util';
+
+const execAsync = promisify(exec);
 import { config } from '../../core/config.js';
 import { cdrSummary, db, listAlerts, logActivity } from '../../services/db.service.js';
 import { createBackup, listBackups, rollbackBackup } from '../../services/backup.service.js';
@@ -106,18 +109,19 @@ export function apiRestart(req, res) {
     message: 'API restart queued'
   });
 
+  // Defer restart so the response is flushed before the process is replaced.
   setTimeout(() => {
-    exec(`pm2 restart ${config.pm2ProcessName}`, (error, stdout, stderr) => {
-      if (error) {
-        logger.error('PM2 restart failed', { error: error.message, stderr });
-        return;
-      }
-
-      logger.info('PM2 restart executed', { stdout });
-      logActivity('server.api_restart', 'PM2 restart executed', {
-        processName: config.pm2ProcessName
+    execAsync(`pm2 restart ${config.pm2ProcessName}`)
+      .then(({ stdout }) => {
+        logger.info('PM2 restart executed', { stdout });
+        logActivity('server.api_restart', 'PM2 restart executed', {
+          processName: config.pm2ProcessName,
+          by: req.user?.username
+        });
+      })
+      .catch((error) => {
+        logger.error('PM2 restart failed', { error: error.message, processName: config.pm2ProcessName });
       });
-    });
   }, 500);
 }
 
