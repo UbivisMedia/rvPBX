@@ -156,6 +156,7 @@ install_base_packages() {
   apt-get install -y \
     ca-certificates \
     curl \
+    wget \
     gnupg \
     lsb-release \
     git \
@@ -167,7 +168,12 @@ install_base_packages() {
     ufw \
     nginx \
     certbot \
-    python3-certbot-nginx
+    python3-certbot-nginx \
+    python3 \
+    python3-pip \
+    libsqlite3-dev \
+    libssl-dev \
+    libffi-dev
 }
 
 ensure_repo() {
@@ -302,14 +308,13 @@ install_asterisk_apt() {
 
 install_asterisk_latest_source() {
   log "Installing Asterisk latest source release from official downloads"
+  # Additional build dependencies for Asterisk source compilation
+  # (wget, libssl-dev, libsqlite3-dev already installed by install_base_packages)
   apt-get install -y \
-    wget \
     subversion \
     libxml2-dev \
     libncurses5-dev \
     uuid-dev \
-    libsqlite3-dev \
-    libssl-dev \
     libjansson-dev \
     libedit-dev
 
