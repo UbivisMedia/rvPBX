@@ -16,8 +16,16 @@ const schema = Joi.object({
   NODE_ENV: Joi.string().valid('development', 'test', 'production').default('development'),
   PORT: Joi.number().port().default(3001),
   CORS_ORIGIN: Joi.string().default('http://localhost:5173'),
-  JWT_SECRET: Joi.string().min(24).required(),
-  JWT_REFRESH_SECRET: Joi.string().min(24).required(),
+  JWT_SECRET: Joi.string().min(24).when('NODE_ENV', {
+    is: 'production',
+    then: Joi.required(),
+    otherwise: Joi.default('dev-only-jwt-secret-not-for-production-use!')
+  }),
+  JWT_REFRESH_SECRET: Joi.string().min(24).when('NODE_ENV', {
+    is: 'production',
+    then: Joi.required(),
+    otherwise: Joi.default('dev-only-refresh-secret-not-for-production-use!')
+  }),
   JWT_ACCESS_TTL: Joi.string().default('15m'),
   JWT_REFRESH_TTL_DAYS: Joi.number().integer().min(1).default(7),
   ADMIN_USERNAME: Joi.string().default('admin'),
