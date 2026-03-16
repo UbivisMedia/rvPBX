@@ -582,7 +582,7 @@ start_backend_pm2() {
   log "Starting backend with PM2"
   cd "${REPO_DIR}"
   pm2 delete "${PM2_APP_NAME}" >/dev/null 2>&1 || true
-  pm2 start backend/ecosystem.config.js --env production
+  pm2 start backend/ecosystem.config.cjs --env production
   pm2 save
   pm2 startup systemd -u root --hp /root >/dev/null 2>&1 || true
 }
