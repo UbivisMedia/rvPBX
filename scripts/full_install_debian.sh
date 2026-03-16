@@ -345,7 +345,7 @@ install_asterisk_latest_source() {
   make install
   make samples
   make config
-  ldconfig
+  /sbin/ldconfig
   systemctl enable --now asterisk || true
 }
 
