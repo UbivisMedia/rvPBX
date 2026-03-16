@@ -10,6 +10,15 @@ export function list(req, res, next) {
   }
 }
 
+export function details(req, res, next) {
+  try {
+    const trunk = service.getTrunkById(Number(req.params.id));
+    res.json({ success: true, message: 'Trunk loaded', data: trunk });
+  } catch (error) {
+    next(error);
+  }
+}
+
 export async function create(req, res, next) {
   try {
     const { value, error } = trunkSchema.validate(req.body);

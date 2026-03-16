@@ -5,6 +5,7 @@ import { reloadAll } from '../../services/reload.service.js';
 import { asteriskService } from '../../services/asterisk.service.js';
 import { telemetryService } from '../../services/telemetry.service.js';
 import { config } from '../../core/config.js';
+import { logger } from '../../core/logger.js';
 import { randomUUID } from 'node:crypto';
 
 function normalizeCodecs(codecs) {
@@ -207,7 +208,8 @@ export async function endpointStatus(id) {
         id
       );
       telemetryService.setEndpointStatus(endpoint.extension, status, { source: 'ami' });
-    } catch (_error) {
+    } catch (error) {
+      logger.warn('AMI endpoint status check failed', { id, error: error.message });
       status = endpoint.status || 'unknown';
     }
   }
