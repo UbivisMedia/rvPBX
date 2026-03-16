@@ -164,7 +164,6 @@ install_base_packages() {
     unzip \
     openssl \
     build-essential \
-    software-properties-common \
     ufw \
     nginx \
     certbot \
